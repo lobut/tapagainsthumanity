@@ -1,0 +1,19 @@
+{
+  "name": "pressagainsthumanity",
+  "version": "1.0.0",
+  "description": "Cards Against Humanity Rip-Off",
+  "main": "server.ts",
+  "dependencies": {
+    "crypto": "0.0.3",
+    "express": "^4.13.3",
+    "mongoose": "^4.3.4",
+    "sha512": "0.0.1",
+    "socket.io": "^1.3.7"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Robert Luong",
+  "license": "ISC"
+}

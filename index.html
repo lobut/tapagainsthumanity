@@ -1,0 +1,29 @@
+<html>
+    <title>Test Page</title>
+<body>
+    <div>
+      <div><span>Username: </span><input id="loginUser" type="text" /></div>
+      <div><span>Password: </span><input id="loginPassword" type="password" /></div>
+      <div><input type="button" value="login" onclick="loginUser()" />
+    </div>
+
+    <script src="https://cdn.socket.io/socket.io-1.3.7.js"></script>
+    <script type="text/javascript">
+      function logInUser() {
+        var user = document.getElementById('loginUser').value;
+        var password = document.getElementById('loginPassword').value;
+
+        var user = {
+          email: user,
+          password: password
+        };
+
+        socket.emit('user.login', user);
+      }
+
+      (function () {
+
+      })
+    </script>
+</body>
+</html>
