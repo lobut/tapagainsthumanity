@@ -1,14 +1,49 @@
 <html>
-    <title>Test Page</title>
+<title>Test Page</title>
+
 <body>
+
+  <!-- login component -->
+  <div>
     <div>
-      <div><span>Username: </span><input id="loginUser" type="text" /></div>
-      <div><span>Password: </span><input id="loginPassword" type="password" /></div>
-      <div><input type="button" value="login" onclick="loginUser()" />
+      <span>Username: </span>
+      <input id="loginUser" type="text" />
+    </div>
+    <div>
+      <span>Password: </span>
+      <input id="loginPassword" type="password" />
+    </div>
+    <div>
+      <input type="button" value="login" onclick="logInUser()" />
     </div>
 
-    <script src="https://cdn.socket.io/socket.io-1.3.7.js"></script>
-    <script type="text/javascript">
+    <div>
+      <input type="button" value="create" onclick="createUser()" />
+    </div>
+  </div>
+
+  <!-- chat component -->
+  <div id="chat-section" style="display:none">
+    <textarea id="chatMessage" />
+    <input type="button" value="send" />
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script type="text/javascript">
+    var socket = io("http://localhost:5000/");
+
+      function createUser() {
+        var user = document.getElementById('loginUser').value;
+        var password = document.getElementById('loginPassword').value;
+
+        var user = {
+          email: user,
+          password: password
+        };
+
+        socket.emit('user.create', user);
+      }
+
       function logInUser() {
         var user = document.getElementById('loginUser').value;
         var password = document.getElementById('loginPassword').value;
@@ -19,11 +54,29 @@
         };
 
         socket.emit('user.login', user);
+
+        socket.on('user.login.error', function(res) {
+          alert('error: ' + res.message);
+        });
+
+        socket.on('user.get.error', function(res) {
+          alert('error (get): ' + res.message);
+        });
+
+        socket.on('user.get.success', function(res) {
+          alert('success login');
+          localStorage.token = res.token;
+        });
+
+        socket.on('user.login.created', function(res) {
+          alert('created a temp user');
+        });
       }
 
       (function () {
 
       })
-    </script>
+  </script>
 </body>
+
 </html>

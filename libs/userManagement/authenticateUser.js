@@ -1,4 +1,5 @@
 var User = require('./userModel'),
+  loginUser = require('./loginUser'),
   sha512 = require('sha512');
 
 module.exports = function authenticateUser (socket, data) {
@@ -9,7 +10,7 @@ module.exports = function authenticateUser (socket, data) {
       return loginUser(socket, data);
     } else {
       return socket.emit('user.login.error', err || {
-        message: "Invalid email or password.'"
+        message: "Invalid email or password."
       });
     }
   });
