@@ -2,7 +2,7 @@
   "name": "pressagainsthumanity",
   "version": "1.0.0",
   "description": "Cards Against Humanity Rip-Off",
-  "main": "server.ts",
+  "main": "server.js",
   "dependencies": {
     "crypto": "0.0.3",
     "express": "^4.13.3",

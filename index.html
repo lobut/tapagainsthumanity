@@ -4,7 +4,7 @@
 <body>
 
   <!-- login component -->
-  <div>
+  <div id="login-component">
     <div>
       <span>Username: </span>
       <input id="loginUser" type="text" />
@@ -24,58 +24,104 @@
 
   <!-- chat component -->
   <div id="chat-section" style="display:none">
-    <textarea id="chatMessage" />
-    <input type="button" value="send" />
+    <div>
+      <textarea id="chatmessage"></textarea>
+      <input type="button" value="send" onclick="sendHallwayMessage()" />
+    </div>
+    <div id="general-chat">
+    </div>
+
+    <div>
+    </div>
   </div>
 
   <script src="/socket.io/socket.io.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
   <script type="text/javascript">
-    var socket = io("http://localhost:5000/");
+
+    (function(window) {
+
+      var socket = io("http://localhost:5000/");
+      var socketHallway = io("http://localhost:5000/hallway")
 
       function createUser() {
-        var user = document.getElementById('loginUser').value;
+        var userInput = document.getElementById('loginUser').value;
         var password = document.getElementById('loginPassword').value;
 
         var user = {
-          email: user,
+          email: userInput,
           password: password
         };
 
         socket.emit('user.create', user);
+      };
+
+      function sendHallwayMessage() {
+        var chatMessage = $('#chatmessage');
+
+        socketHallway.emit('message.send', {
+          message: chatMessage.val(),
+          token: localStorage.token
+        });
+
+        chatMessage.val('');
       }
 
+      socket.on('user.login.error', function(res) {
+        alert('error: ' + res.message);
+      });
+
+      socket.on('chatroom.unauthorized', function(res) {
+        alert('error: ' + res.message);
+      });
+
+      socket.on('user.get.error', function(res) {
+        alert('error (get): ' + res.message);
+      });
+
+      // hallway stuff
+      socketHallway.on('message.sent', function(res) {
+        $('#general-chat').append(
+          `<div><span>${res.username}:</span><span>${res.message}</span></div>`)
+      });
+
+      socket.on('user.get.success', function(res) {
+        alert('success login');
+        localStorage.token = res.token;
+
+        swapToChatScreen();
+      });
+
+      function swapToChatScreen() {
+        document.getElementById('login-component').style.display = "none";
+        document.getElementById('chat-section').style.display = null;
+      }
+
+      socket.on('user.login.created', function(res) {
+        alert('created a user');
+      });
+
       function logInUser() {
-        var user = document.getElementById('loginUser').value;
+        var userInput = document.getElementById('loginUser').value;
         var password = document.getElementById('loginPassword').value;
 
         var user = {
-          email: user,
+          email: userInput,
           password: password
         };
 
         socket.emit('user.login', user);
+      };
 
-        socket.on('user.login.error', function(res) {
-          alert('error: ' + res.message);
-        });
-
-        socket.on('user.get.error', function(res) {
-          alert('error (get): ' + res.message);
-        });
-
-        socket.on('user.get.success', function(res) {
-          alert('success login');
-          localStorage.token = res.token;
-        });
-
-        socket.on('user.login.created', function(res) {
-          alert('created a temp user');
-        });
-      }
-
-      (function () {
-
+      socket.emit('amiloggedin', {
+        token: localStorage.token
       })
+
+      window.sendHallwayMessage = sendHallwayMessage;
+      window.createUser = createUser;
+      window.logInUser = logInUser;
+    })(window);
+
   </script>
 </body>
 

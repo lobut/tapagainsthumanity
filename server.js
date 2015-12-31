@@ -4,6 +4,7 @@ var express = require('express'),
   socketIO = require('socket.io'),
   authenticateUser = require('./libs/userManagement/authenticateUser'),
   createUser = require('./libs/userManagement/createUser'),
+  userSetup = require('./libs/chat/setup'),
   server, io;
 
 global.userSessions = {};
@@ -29,4 +30,14 @@ io.on('connection', (socket) => {
     });
   });
 
+  socket.on('amiloggedin', (data) => {
+    if (userSessions[data.token] !== undefined) {
+      socket.emit('user.get.success', {
+        token: data.token
+      });
+    }
+  });
+
 });
+
+userSetup(io);
