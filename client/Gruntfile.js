@@ -23,7 +23,7 @@ module.exports = function (grunt) {
     watch: {
       ts_server: {
         files: ['app/**/*', '*.ts'],
-        tasks: ['ts'],
+        tasks: ['ts', 'webpack:dev'],
         options: {
           livereload: true
         },
@@ -76,5 +76,5 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks("grunt-concurrent");
   grunt.loadNpmTasks("grunt-webpack");
 
-  grunt.registerTask("default", ["ts", "concurrent:dev"]);
+  grunt.registerTask("default", ["ts", "webpack:dev", "concurrent:dev"]);
 };
