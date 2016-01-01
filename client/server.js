@@ -3,6 +3,7 @@ var errorHandler = require('errorhandler');
 var app = express();
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
+app.use('/public', express.static(__dirname + '/public'));
 var env = process.env.NODE_ENV || 'development';
 if (env === 'development') {
     app.use(errorHandler());

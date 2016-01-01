@@ -1,4 +1,5 @@
 'use strict'
+var path = require('path');
 
 module.exports = function (grunt) {
 
@@ -12,8 +13,8 @@ module.exports = function (grunt) {
 
   grunt.initConfig({
     ts: {
-      default : {
-        src: ["**/*.ts", "!node_modules/**/*.ts","!typings/**/*.ts"],
+      default: {
+        src: ["**/*.ts", "!node_modules/**/*.ts", "!typings/**/*.ts"],
         options: {
           module: 'commonjs'
         }
@@ -46,6 +47,26 @@ module.exports = function (grunt) {
       dev: {
         tasks: ['watch:ts_server', 'nodemon']
       }
+    },
+    webpack: {
+      dev: {
+        entry: './app/app.js',
+        output: {
+          path: path.join(__dirname, 'public'),
+          filename: 'main.js'
+        },
+        module: {
+          loaders: [
+            {
+              test: /\.(js|jsx)$/, exclude: /(node_modules|bower_components)/,
+              loader: 'babel',
+              query: {
+                presets: ['react', 'es2015']
+              }
+            }
+          ]
+        }
+      }
     }
   });
 
@@ -53,6 +74,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-nodemon');
   grunt.loadNpmTasks("grunt-contrib-watch");
   grunt.loadNpmTasks("grunt-concurrent");
+  grunt.loadNpmTasks("grunt-webpack");
 
   grunt.registerTask("default", ["ts", "concurrent:dev"]);
 };
