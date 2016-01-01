@@ -34,7 +34,7 @@ module.exports = function (grunt) {
         script: 'server.js',
         options: {
           ignore: ['node_modules/**', 'typings/**'],
-          ext: 'ts,js,tsx',
+          ext: 'ts,js,tsx,jsx',
           watch: ['public/**/*', '.'],
           delay: 1000
         }
@@ -55,10 +55,21 @@ module.exports = function (grunt) {
           path: path.join(__dirname, 'public'),
           filename: 'main.js'
         },
+        resolve: {
+          extensions: ['', '.js', '.jsx']
+        },
         module: {
+          preloaders: [
+            {
+              test: /\.(js|jsx)$/,
+              exclude: /(node_modules|bower_components)/,
+              loader: 'eslint-loader',
+            }
+          ],
           loaders: [
             {
-              test: /\.(js|jsx)$/, exclude: /(node_modules|bower_components)/,
+              test: /\.(js|jsx)$/,
+              exclude: /(node_modules|bower_components)/,
               loader: 'babel',
               query: {
                 presets: ['react', 'es2015']

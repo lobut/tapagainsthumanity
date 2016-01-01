@@ -1,12 +1,7 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
-
-class HelloMessage extends React.Component {
-  render() {
-    return <div>Hello world!</div>;
-  }
-}
+var Login = require('./loginmod');
 
 (function() {
-  ReactDOM.render(<HelloMessage name="Sebastian" />, document.getElementById('robertface'));
+  ReactDOM.render(<Login name="Sebastian" />, document.getElementById('robertface'));
 })();
