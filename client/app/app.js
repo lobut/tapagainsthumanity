@@ -1,6 +1,7 @@
-var React = require('react');
-var ReactDOM = require('react-dom');
-var Login = require('./loginmod');
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Login from './loginmod';
+import Log2 from './components/login';
 
 (function() {
   ReactDOM.render(<Login name="Sebastian" />, document.getElementById('robertface'));

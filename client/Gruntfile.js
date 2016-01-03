@@ -56,7 +56,7 @@ module.exports = function (grunt) {
           filename: 'main.js'
         },
         resolve: {
-          extensions: ['', '.js', '.jsx']
+          extensions: ['', '.js', '.jsx', '.json']
         },
         module: {
           preloaders: [
