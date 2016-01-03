@@ -50,7 +50,7 @@ module.exports = function (grunt) {
     },
     webpack: {
       dev: {
-        entry: './app/app.js',
+        entry: './app/index.js',
         output: {
           path: path.join(__dirname, 'public'),
           filename: 'main.js'
